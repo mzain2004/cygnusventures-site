@@ -16,8 +16,9 @@ export const metadata: Metadata = {
   title: "Cygnus Ventures",
   description: "AI-Powered Cybersecurity Studio",
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-icon.png",
+    icon: "/logo.png",
+    apple: "/logo.png",
+    shortcut: "/logo.png",
   },
 };
 
