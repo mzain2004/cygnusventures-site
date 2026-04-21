@@ -1,7 +1,7 @@
 "use client";
 
 import { Inter, Syne } from "next/font/google";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const syne = Syne({ subsets: ["latin"], variable: "--font-syne", weight: ["700", "800"] });
@@ -16,30 +16,29 @@ const phishSlayerTags = [
 ];
 
 export default function Home() {
+  const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
-    const revealElements = document.querySelectorAll<HTMLElement>("[data-reveal]");
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
-    revealElements.forEach((element) => {
-      element.classList.add("reveal-hidden");
-    });
-
+    const revealElements = document.querySelectorAll<HTMLElement>(".reveal");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          entry.target.classList.add("reveal-visible");
+          entry.target.classList.add("visible");
           observer.unobserve(entry.target);
         });
       },
-      {
-        threshold: 0.15,
-        rootMargin: "0px 0px -70px 0px",
-      },
+      { threshold: 0.12, rootMargin: "0px 0px -60px 0px" },
     );
+    revealElements.forEach((el) => observer.observe(el));
 
-    revealElements.forEach((element) => observer.observe(element));
-
-    return () => observer.disconnect();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   return (
@@ -48,15 +47,20 @@ export default function Home() {
         Skip to main content
       </a>
 
-      <header className="sticky top-0 z-50 border-b border-white/5 bg-black/90 backdrop-blur-md">
+      {/* Navbar */}
+      <header
+        className={`sticky top-0 z-50 border-b border-white/5 backdrop-blur-md transition-colors duration-300 ${
+          scrolled ? "bg-black/95" : "bg-black/90"
+        }`}
+      >
         <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <a href="#hero" className="group flex items-center gap-3">
             <img
               src="/logo.png"
               alt="Cygnus Ventures"
-              width="40"
-              height="40"
-              style={{ objectFit: "contain" }}
+              width={36}
+              height={36}
+              style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
             />
             <span className="font-[var(--font-syne)] text-xs font-extrabold tracking-[0.2em] text-white sm:text-sm">
               CYGNUS VENTURES
@@ -64,18 +68,10 @@ export default function Home() {
           </a>
 
           <div className="hidden items-center gap-8 text-sm font-medium text-zinc-400 md:flex">
-            <a href="#studio" className="transition-colors duration-300 hover:text-white">
-              Studio
-            </a>
-            <a href="#products" className="transition-colors duration-300 hover:text-white">
-              Products
-            </a>
-            <a href="#founder" className="transition-colors duration-300 hover:text-white">
-              Founder
-            </a>
-            <a href="#contact" className="transition-colors duration-300 hover:text-white">
-              Contact
-            </a>
+            <a href="#studio" className="transition-colors duration-300 hover:text-white">Studio</a>
+            <a href="#products" className="transition-colors duration-300 hover:text-white">Products</a>
+            <a href="#founder" className="transition-colors duration-300 hover:text-white">Founder</a>
+            <a href="#contact" className="transition-colors duration-300 hover:text-white">Contact</a>
           </div>
 
           <a
@@ -88,24 +84,28 @@ export default function Home() {
       </header>
 
       <main id="hero" className="relative isolate overflow-hidden">
-        <div className="pointer-events-none absolute inset-0 [background-image:linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] [background-size:56px_56px]" />
+        {/* Animated grid background */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
         <div className="pointer-events-none absolute left-1/2 top-20 h-[540px] w-[540px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,rgba(139,92,246,0.24),rgba(139,92,246,0)_68%)]" />
         <div className="pointer-events-none absolute right-10 top-8 h-[320px] w-[320px] rounded-full bg-violet-900/30 blur-3xl" />
 
+        {/* Hero */}
         <section className="mx-auto w-full max-w-6xl px-4 pb-20 pt-24 sm:px-6 lg:px-8 lg:pt-32">
-          <p
-            data-reveal
-            className="text-xs font-semibold uppercase tracking-[0.26em] text-violet-400"
-          >
+          <p className="hero-1 text-xs font-semibold uppercase tracking-[0.26em] text-violet-400">
             AI-Powered Cybersecurity Studio
           </p>
 
-          <h1 className="mt-6 max-w-5xl font-[var(--font-syne)] text-5xl font-extrabold leading-[1.03] text-white sm:text-6xl lg:text-7xl">
-            <span className="hero-word" style={{ animationDelay: "0.05s" }}>
-              We Build Autonomous
-            </span>{" "}
+          <h1 className="hero-2 mt-6 max-w-5xl font-[var(--font-syne)] text-6xl font-extrabold leading-[1.03] text-white sm:text-7xl lg:text-8xl">
+            <span>We Build Autonomous</span>
             <br />
-            <span className="hero-word text-violet-400" style={{ animationDelay: "0.28s" }}>
+            <span className="text-violet-400">
               Cyber Defense
               <span
                 aria-hidden="true"
@@ -114,15 +114,12 @@ export default function Home() {
             </span>
           </h1>
 
-          <p data-reveal className="mt-7 max-w-lg text-base leading-8 text-zinc-400 sm:text-lg">
+          <p className="hero-3 mt-7 max-w-lg text-base leading-8 text-zinc-400 sm:text-lg">
             Cygnus Ventures engineers premium, agentic security products for teams that need speed,
             precision, and resilient infrastructure from day one.
           </p>
 
-          <div
-            data-reveal
-            className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-500"
-          >
+          <div className="hero-3 mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-zinc-500">
             <span>3 Products</span>
             <span aria-hidden="true" className="h-4 w-px bg-white/10" />
             <span>L1/L2/L3 Agents</span>
@@ -130,7 +127,7 @@ export default function Home() {
             <span>Production Ready</span>
           </div>
 
-          <div data-reveal className="mt-10 flex flex-col gap-4 sm:flex-row">
+          <div className="hero-4 mt-10 flex flex-col gap-4 sm:flex-row">
             <a
               href="#products"
               className="inline-flex items-center justify-center bg-white px-7 py-3 text-sm font-semibold text-black transition duration-300 hover:scale-105"
@@ -146,7 +143,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section data-reveal className="border-y border-white/5">
+        <section className="reveal border-y border-white/5">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-6 sm:flex-row sm:items-center sm:px-6 lg:px-8">
             <span className="text-xs font-semibold uppercase tracking-[0.34em] text-zinc-600 sm:mr-2">
               BUILT WITH
@@ -164,8 +161,9 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Studio */}
         <section id="studio" className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-          <h2 data-reveal className="font-[var(--font-syne)] text-3xl font-extrabold text-white sm:text-4xl">
+          <h2 className="reveal font-[var(--font-syne)] text-3xl font-extrabold text-white sm:text-4xl">
             The Studio
           </h2>
 
@@ -186,62 +184,26 @@ export default function Home() {
             ].map((card) => (
               <article
                 key={card.title}
-                data-reveal
-                className="group rounded-[12px] border border-white/10 bg-[rgba(255,255,255,0.02)] p-8 transition duration-300 hover:scale-[1.02] hover:border-white/20 hover:shadow-[0_0_0_1px_rgba(139,92,246,0.3)]"
+                className="reveal group rounded-[12px] border border-white/10 bg-[rgba(255,255,255,0.02)] p-8 transition-all duration-300 hover:scale-[1.02] hover:border-white/20 hover:shadow-[0_0_0_1px_rgba(124,58,237,0.3)]"
               >
                 <span className="mb-6 block h-px w-8 bg-violet-500" />
                 <div className="flex items-center gap-3">
                   <span className="text-violet-400" aria-hidden="true">
                     {card.title === "Agentic Response Systems" ? (
                       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-                        <path
-                          d="M12 2L20 6V12C20 16.6 16.8 20.3 12 22C7.2 20.3 4 16.6 4 12V6L12 2Z"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                        />
-                        <path
-                          d="M9 12.5L11 14.5L15.5 10"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
+                        <path d="M12 2L20 6V12C20 16.6 16.8 20.3 12 22C7.2 20.3 4 16.6 4 12V6L12 2Z" stroke="currentColor" strokeWidth="1.6" />
+                        <path d="M9 12.5L11 14.5L15.5 10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     ) : card.title === "Enterprise-Ready Architecture" ? (
                       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-                        <path
-                          d="M6 7H18V11H6V7Z"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M6 13H18V17H6V13Z"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M8.5 9H8.51"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                        <path
-                          d="M8.5 15H8.51"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
+                        <path d="M6 7H18V11H6V7Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                        <path d="M6 13H18V17H6V13Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+                        <path d="M8.5 9H8.51" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                        <path d="M8.5 15H8.51" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                       </svg>
                     ) : (
                       <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-                        <path
-                          d="M13 2L4 14H11L9 22L20 10H13L13 2Z"
-                          stroke="currentColor"
-                          strokeWidth="1.6"
-                          strokeLinejoin="round"
-                        />
+                        <path d="M13 2L4 14H11L9 22L20 10H13L13 2Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
                       </svg>
                     )}
                   </span>
@@ -253,17 +215,16 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Products */}
         <section id="products" className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-          <h2 data-reveal className="font-[var(--font-syne)] text-3xl font-extrabold text-white sm:text-4xl">
+          <h2 className="reveal font-[var(--font-syne)] text-3xl font-extrabold text-white sm:text-4xl">
             Products
           </h2>
 
           <div className="mt-10 grid gap-6 lg:grid-cols-[1.8fr_1fr]">
-            <div
-              data-reveal
-              className="group rounded-xl p-[1px] bg-gradient-to-br from-violet-500/50 via-transparent to-cyan-500/20 transition duration-300 hover:scale-[1.02]"
-            >
-              <div className="rounded-xl bg-black p-6 ring-1 ring-white/10">
+            {/* PhishSlayer — gradient border */}
+            <div className="reveal p-[1px] bg-gradient-to-br from-violet-500/40 via-transparent to-cyan-500/20 rounded-xl transition duration-300 hover:scale-[1.02]">
+              <div className="bg-black rounded-xl p-6 ring-1 ring-white/10 h-full">
                 <p className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-400">
                   <span className="relative flex h-2 w-2" aria-hidden="true">
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -295,10 +256,8 @@ export default function Home() {
               </div>
             </div>
 
-            <article
-              data-reveal
-              className="rounded-[12px] border border-white/10 bg-[rgba(255,255,255,0.02)] p-6 grayscale opacity-50 transition duration-300 hover:scale-[1.02] hover:border-white/20 hover:grayscale-0 hover:opacity-100"
-            >
+            {/* Port Patrol */}
+            <article className="reveal rounded-[12px] border border-white/10 bg-[rgba(255,255,255,0.02)] p-6 grayscale opacity-40 transition-all duration-500 hover:scale-[1.02] hover:border-white/20 hover:grayscale-0 hover:opacity-60">
               <p className="inline-flex rounded-full border border-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-zinc-400">
                 Coming Soon
               </p>
@@ -311,9 +270,10 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Founder */}
         <section id="founder" className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-2 lg:items-start">
-            <div data-reveal>
+            <div className="reveal">
               <h2 className="font-[var(--font-syne)] text-3xl font-extrabold text-white sm:text-4xl">
                 Founder-Led by Design
               </h2>
@@ -323,7 +283,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div data-reveal className="grid gap-5 rounded-[12px] border border-white/10 bg-[rgba(255,255,255,0.03)] p-7">
+            <div className="reveal grid gap-5 rounded-[12px] border border-white/10 bg-[rgba(255,255,255,0.03)] p-7">
               {[
                 { value: "01", label: "Founder" },
                 { value: "02", label: "Products in Market" },
@@ -338,17 +298,18 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Contact / CTA */}
         <section id="contact" className="relative border-y border-white/10">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.2),rgba(0,0,0,0)_65%)]" />
           <div className="relative mx-auto w-full max-w-5xl px-4 py-20 text-center sm:px-6 lg:px-8">
-            <h2 data-reveal className="font-[var(--font-syne)] text-4xl font-extrabold text-white sm:text-5xl">
+            <h2 className="reveal font-[var(--font-syne)] text-4xl font-extrabold text-white sm:text-5xl">
               Build the Next Layer of Defense
             </h2>
-            <p data-reveal className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-zinc-400">
+            <p className="reveal mx-auto mt-5 max-w-2xl text-lg leading-8 text-zinc-400">
               Partner with Cygnus Ventures to deploy AI-powered security systems that move as fast as your
               attackers.
             </p>
-            <div data-reveal className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+            <div className="reveal mt-10 flex flex-col justify-center gap-4 sm:flex-row">
               <a
                 href="https://phishslayer.com"
                 target="_blank"
@@ -368,30 +329,33 @@ export default function Home() {
         </section>
       </main>
 
+      {/* Footer */}
       <footer className="border-t border-white/10">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-8 text-sm text-zinc-600 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
           <p>CYGNUS VENTURES</p>
           <div className="flex items-center gap-3">
             <a
-              href="https://x.com"
+              href="https://x.com/mzain2004"
               target="_blank"
               rel="noreferrer"
               aria-label="Cygnus Ventures on X"
               className="inline-flex h-9 w-9 items-center justify-center text-zinc-600 transition-colors duration-300 hover:text-white"
             >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
-                <path d="M18.2 2H21l-6.5 7.4L22 22h-6.8l-5.3-6.9L3.8 22H1l7-8L2 2h7l4.8 6.4L18.2 2ZM17 20h1.6L8.9 4H7.2L17 20Z" />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.741l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
             </a>
             <a
-              href="https://www.linkedin.com"
+              href="https://linkedin.com/in/mzain2004"
               target="_blank"
               rel="noreferrer"
               aria-label="Cygnus Ventures on LinkedIn"
               className="inline-flex h-9 w-9 items-center justify-center text-zinc-600 transition-colors duration-300 hover:text-white"
             >
-              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
-                <path d="M6.94 6.5A2.19 2.19 0 1 1 6.94 2.1a2.19 2.19 0 0 1 0 4.4ZM5.5 21.9H8.4V8.7H5.5v13.2ZM12 8.7h2.8v1.8h.04c.4-.75 1.38-1.55 2.84-1.55 3.04 0 3.6 2 3.6 4.6v8.35h-2.9v-7.4c0-1.77-.03-4.05-2.47-4.05-2.47 0-2.85 1.93-2.85 3.92v7.53H12V8.7Z" />
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
               </svg>
             </a>
           </div>
@@ -400,10 +364,6 @@ export default function Home() {
       </footer>
 
       <style jsx global>{`
-        html {
-          scroll-behavior: smooth;
-        }
-
         .hero-word {
           display: inline-block;
           opacity: 0;
@@ -411,26 +371,9 @@ export default function Home() {
           animation: hero-word-in 0.75s ease-out forwards;
         }
 
-        .reveal-hidden {
-          opacity: 0;
-          transform: translateY(26px);
-          transition: opacity 700ms ease, transform 700ms ease;
-        }
-
-        .reveal-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-
         @keyframes hero-word-in {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
 
         .cursor-blink {
@@ -438,14 +381,8 @@ export default function Home() {
         }
 
         @keyframes cursor-blink {
-          0%,
-          49% {
-            opacity: 1;
-          }
-          50%,
-          100% {
-            opacity: 0;
-          }
+          0%, 49% { opacity: 1; }
+          50%, 100% { opacity: 0; }
         }
       `}</style>
     </div>
