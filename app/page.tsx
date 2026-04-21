@@ -51,15 +51,13 @@ export default function Home() {
       <header className="sticky top-0 z-50 border-b border-white/5 bg-black/90 backdrop-blur-md">
         <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
           <a href="#hero" className="group flex items-center gap-3">
-            <svg
-              viewBox="0 0 44 24"
-              className="h-6 w-12 text-white"
-              shapeRendering="geometricPrecision"
-              aria-hidden="true"
-            >
-              <path d="M2 22L16 12L2 2H10L24 12L10 22H2Z" fill="currentColor" />
-              <path d="M20 22L34 12L20 2H28L42 12L28 22H20Z" fill="currentColor" />
-            </svg>
+            <img
+              src="/logo.png"
+              alt="Cygnus Ventures"
+              width="40"
+              height="40"
+              style={{ objectFit: "contain" }}
+            />
             <span className="font-[var(--font-syne)] text-xs font-extrabold tracking-[0.2em] text-white sm:text-sm">
               CYGNUS VENTURES
             </span>
