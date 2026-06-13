@@ -404,9 +404,11 @@ export default function Home() {
               <div className="bg-white border border-brand-border p-8 rounded-3xl relative overflow-hidden shadow-[0_15px_30px_0_rgba(32,24,39,0.02)]">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-[radial-gradient(circle,rgba(124,58,237,0.05),transparent_70%)] pointer-events-none" />
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-full bg-brand-purple text-white flex items-center justify-center font-[var(--font-syne)] text-lg font-bold uppercase tracking-wider shadow-sm">
-                    MZ
-                  </div>
+                  <img
+                    src="/founder-image.png"
+                    alt="Muhammad Zain, CEO & Director of Cygnus Ventures"
+                    className="w-16 h-16 rounded-full object-cover object-center border border-[#E8E1D8] ring-2 ring-[#F3E8FF] shadow-sm shrink-0"
+                  />
                   <div>
                     <h3 className="text-lg font-extrabold text-brand-text">Muhammad Zain</h3>
                     <p className="text-xs text-brand-purple font-semibold mt-0.5">CEO & Director, Cygnus Ventures</p>
@@ -450,16 +452,16 @@ export default function Home() {
 
             <div className="reveal flex flex-col justify-center items-center sm:flex-row gap-4">
               <a
-                href="mailto:contact@cygnusventures.dev?subject=Intro%20Request%20-%20Cygnus%20Ventures"
+                href="mailto:zain@cygnusventures.dev?subject=Intro%20Request%20-%20Cygnus%20Ventures"
                 className="inline-flex items-center justify-center rounded-full bg-brand-dark-cta text-white px-8 py-3.5 text-sm font-semibold tracking-wide hover:bg-brand-purple hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-md w-full sm:w-auto"
               >
                 Book an Intro
               </a>
               <a
-                href="mailto:contact@cygnusventures.dev"
+                href="mailto:zain@cygnusventures.dev"
                 className="inline-flex items-center justify-center rounded-full border border-brand-border bg-white text-brand-text px-8 py-3.5 text-sm font-semibold tracking-wide hover:border-brand-purple hover:text-brand-purple hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 w-full sm:w-auto"
               >
-                Email Us (contact@cygnusventures.dev)
+                Email Us (zain@cygnusventures.dev)
               </a>
             </div>
           </div>

@@ -33,7 +33,11 @@ export const metadata: Metadata = {
     siteName: "Cygnus Ventures",
     type: "website",
   },
-  icons: { icon: [{ url: '/Cygnus_Ventures_Logo-2.png', type: 'image/png' }], apple: '/Cygnus_Ventures_Logo-2.png' }
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/apple-icon.png",
+  }
 };
 
 export default function RootLayout({
