@@ -495,18 +495,7 @@ export default function Home() {
 
             <div className="flex items-center gap-4">
               <a
-                href="https://x.com/mzain2004"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Cygnus Ventures on X"
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-brand-border bg-white text-brand-muted hover:text-brand-purple hover:border-brand-purple hover:scale-105 active:scale-95 transition-all duration-200"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.741l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/mzain-founder/"
+                href="https://www.linkedin.com/company/cygnus-ventures-smc-pvt-ltd"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Cygnus Ventures on LinkedIn"
