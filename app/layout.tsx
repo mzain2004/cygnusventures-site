@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cygnus Ventures — Autonomous Security Products",
+  title: "Cygnus Ventures",
   description: "Cygnus Ventures SMC Pvt Ltd is a cybersecurity product company building PhishSlayer, an autonomous SOC intelligence platform for MSSPs and enterprise security teams.",
   keywords: [
     "Cygnus Ventures",
@@ -34,8 +34,8 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
     apple: "/apple-icon.png",
   }
 };
