@@ -14,13 +14,26 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cygnus Ventures",
-  description: "AI-Powered Cybersecurity Studio",
-  icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
-    shortcut: "/logo.png",
+  title: "Cygnus Ventures — Autonomous Security Products",
+  description: "Cygnus Ventures SMC Pvt Ltd is a cybersecurity product company building PhishSlayer, an autonomous SOC intelligence platform for MSSPs and enterprise security teams.",
+  keywords: [
+    "Cygnus Ventures",
+    "PhishSlayer",
+    "cybersecurity company",
+    "autonomous SOC",
+    "SOC intelligence",
+    "MSSP platform",
+    "cloud security",
+    "DevSecOps",
+    "Pakistan cybersecurity startup"
+  ],
+  openGraph: {
+    title: "Cygnus Ventures — Autonomous Security Products",
+    description: "Cygnus Ventures SMC Pvt Ltd is a cybersecurity product company building PhishSlayer, an autonomous SOC intelligence platform for MSSPs and enterprise security teams.",
+    siteName: "Cygnus Ventures",
+    type: "website",
   },
+  icons: { icon: [{ url: '/Cygnus_Ventures_Logo-2.png', type: 'image/png' }], apple: '/Cygnus_Ventures_Logo-2.png' }
 };
 
 export default function RootLayout({
@@ -33,7 +46,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full bg-[#FBFAF7] text-[#201827] flex flex-col">
         {children}
         <Analytics />
       </body>
